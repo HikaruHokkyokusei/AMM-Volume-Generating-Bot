@@ -1,8 +1,8 @@
-import { createRequire } from "module";
+import {createRequire} from "module";
+import Web3 from "web3";
+
 const require = createRequire(import.meta.url);
 const configData = require("./configData.json");
-
-import Web3 from "web3";
 
 const web3 = new Web3("https://bsc-dataseed.binance.org/");
 const smartContract = new web3.eth.Contract(configData["contractAbi"], configData["contractAddress"]);
@@ -34,6 +34,9 @@ const main = async () => {
     const bnbAmount = process.env["bnbAmount"];
     const iterationDuration = parseInt(process.env["iterationDuration"]);
     const iterationCounts = parseInt(process.env["iterationCounts"]);
+
+    console.log("bnbAmount, iterationDuration, iterationCounts");
+    console.log(bnbAmount, iterationDuration, iterationCounts);
 
     for (let i = 0; i < iterationCounts; i++) {
         console.log(await sendTransactionToBlockchain(senderPK, "generateVolume", [bnbAmount]));
