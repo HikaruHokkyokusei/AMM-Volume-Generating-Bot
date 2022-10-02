@@ -26,22 +26,29 @@ const sendTransactionToBlockchain = async (senderPK, functionName, params) => {
     return transactionReceipt.status;
 };
 
+let currentIteration = 1;
+let bnbAmount = process.env["bnbAmount"];
+let iterationDuration = parseInt(process.env["iterationDuration"]);
+let iterationCounts = parseInt(process.env["iterationCounts"]);
+
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+const recallingFunction = async () => {
+    console.log(await sendTransactionToBlockchain(senderPK, "generateVolume", [bnbAmount]));
+    if (currentIteration <= iterationCounts) {
+        await delay(iterationDuration);
+        recallingFunction(bnbAmount).then();
+    }
+};
 
 const main = async () => {
     baseTransaction["chainId"] = await web3.eth.getChainId();
     Object.freeze(baseTransaction);
-    const bnbAmount = process.env["bnbAmount"];
-    const iterationDuration = parseInt(process.env["iterationDuration"]);
-    const iterationCounts = parseInt(process.env["iterationCounts"]);
 
     console.log("bnbAmount, iterationDuration, iterationCounts");
     console.log(bnbAmount, iterationDuration, iterationCounts);
 
-    for (let i = 0; i < iterationCounts; i++) {
-        console.log(await sendTransactionToBlockchain(senderPK, "generateVolume", [bnbAmount]));
-        await delay(iterationDuration);
-    }
+    recallingFunction().then();
 };
 
 main().then();
