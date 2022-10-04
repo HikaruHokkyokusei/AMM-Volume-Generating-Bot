@@ -36,6 +36,7 @@ const delay = (ms) => new Promise(res => setTimeout(res, ms));
 const recallingFunction = async () => {
     console.log(await sendTransactionToBlockchain(senderPK, "generateVolume", [bnbAmount]));
     if (currentIteration <= iterationCounts) {
+        currentIteration += 1;
         await delay(iterationDuration);
         recallingFunction(bnbAmount).then();
     }
