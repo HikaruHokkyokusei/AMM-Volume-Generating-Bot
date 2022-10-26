@@ -27,9 +27,9 @@ const sendTransactionToBlockchain = async (senderPK, functionName, params) => {
 };
 
 let currentIteration = 1;
-let bnbAmount = process.env["bnbAmount"];
-let iterationDuration = parseInt(process.env["iterationDuration"]);
-let iterationCounts = parseInt(process.env["iterationCounts"]);
+let bnbAmount = "3000000000000000000";
+let iterationDuration = parseInt("3600000");
+let iterationCounts = parseInt("336");
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
